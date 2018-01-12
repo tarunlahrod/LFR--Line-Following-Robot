@@ -1,0 +1,111 @@
+
+
+
+
+#define rn 8       // negative of right motor
+#define rp 10       // positive of right motor
+#define lp 7       // positive of left motor
+#define ln 6       // negative of left motor
+
+
+void setup() {
+  // put your setup code here, to run once:
+
+ pinMode(6,OUTPUT);
+ pinMode(7,OUTPUT); 
+ pinMode(8,OUTPUT);
+ pinMode(9,OUTPUT);
+ pinMode(3,INPUT);
+ pinMode(4,INPUT);
+ pinMode(5,INPUT);
+
+
+}
+
+// using analogWrite to implement PWM to manage the rotation speed of the two motors
+
+void straight()
+{
+ analogWrite(ln,0);
+ analogWrite(lp,60);
+ analogWrite(rn,0);
+ analogWrite(rp,50);
+}
+
+void stp()
+{
+ analogWrite(ln,0);
+ analogWrite(lp,0);
+ analogWrite(rn,0);
+ analogWrite(rp,0);
+}
+
+void slightLeft()
+{
+ analogWrite(ln,0);
+ analogWrite(lp,0);
+ analogWrite(rn,0);
+ analogWrite(rp,50); 
+}
+
+void slightRight()
+{
+ analogWrite(ln,0);
+ analogWrite(lp,60);
+ analogWrite(rn,0);
+ analogWrite(rp,0);
+}
+
+void hardRight()
+{
+ analogWrite(ln,0);
+ analogWrite(lp,60);
+ analogWrite(rn,50);
+ analogWrite(rp,0);
+}
+
+void hardLeft()
+{
+ analogWrite(ln,60);
+ analogWrite(lp,0);
+ analogWrite(rn,0);
+ analogWrite(rp,50 );
+}
+
+void lost()
+{
+ analogWrite(lp,60);
+ analogWrite(ln,0);
+ analogWrite(rp,50);
+ analogWrite(rn,0);   
+}
+
+void loop() {
+
+  // put your main code here, to run repeatedly:
+
+int left,mid,right; //integers for storing the data from the IR sensors
+
+ int  left = digitalRead(3);  //LEFT SENSOR in the moving direction, pinMode 3
+ int  mid = digitalRead(4);   //MIDDLE SENSOR in the moving direction, pinMode 4
+ int  right = digitalRead(5); //RIGHT SENSOR in the moving direction, pinMode 5
+
+ int move = (left*4) + (mid*2) + (right) ;    //making a simple algo for differentiating each case and hence use switch case
+
+// using switch case for better efficiency 
+
+switch (move)        
+{
+  case 0: stp(); break;
+  case 1: hardLeft(); break;
+  case 2: straight(); break;   //this case '010' does not exist, still taking under consideration.
+  case 3: slightLeft(); break;
+  case 4: hardRight(); break;
+  case 5: straight(); break;
+  case 6: slightRight(); break;
+  case 7: lost(); break;
+}
+
+
+}
+//end of loop
